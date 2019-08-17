@@ -45,15 +45,8 @@ RUN chmod +x /sbin/after_install
 
 # To allow access from outside of the container  to the container service at these ports
 # Need to allow ports access rule at firewall too .  
-EXPOSE 9000/tcp
-EXPOSE 9000/udp
-EXPOSE 9001/tcp
-EXPOSE 9001/tcp
-EXPOSE 9002/tcp
-EXPOSE 9002/udp
-EXPOSE 9003/udp
-EXPOSE 9003/udp
-
+EXPOSE 9000-9003/tcp
+EXPOSE 9000-9003/udp
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
