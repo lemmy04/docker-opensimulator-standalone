@@ -1,6 +1,6 @@
 # docker-opensimulator
 
-Docker container for [OpenSimulator 0.9.0.1][3]
+Docker container for [OpenSimulator 0.9.1][3]
 
 "OpenSimulator is an open source multi-platform, multi-user 3D application server. It can be used to create a virtual environment (or world) which can be accessed through a variety of clients, on multiple protocols. It also has an optional facility (the Hypergrid) to allow users to visit other OpenSimulator installations across the web from their 'home' OpenSimulator installation. In this way, it is the basis of a nascent distributed Metaverse."
 
@@ -17,9 +17,19 @@ To install docker in Ubuntu 18.04 use the commands:
 
 ## Usage
 
+This container image is setup for connectiong to osgrid, and running up to 4 regions on the ports 9000-9003.
+If you already have a Regions.ini file, map it into the container as /opt/opensim/bin/Regions/Regions.ini using -v
+If you don't, run the "first configuration" step described in the next section.
+
 To run container use the command below:
 
-    $ docker run -d -p 9000:9000 -p 9000:9000/udp quantumobject/docker-opensimulator
+    $ docker run -ti -d \
+                 -p 9000:9000 -p 9000:9000/udp \
+                 -p 9001:9001 -p 9001:9001/udp \
+                 -p 9002:9002 -p 9002:9002/udp \
+                 -p 9003:9003 -p 9003:9003/udp \
+                 { -v your.region.ini:/opt/opensim/bin/Regions/Regions.ini} \
+                 lemmy04/opensim:latest
  
 ## For the first configuration :
 
