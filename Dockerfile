@@ -54,8 +54,8 @@ RUN chmod +x /etc/service/opensim/unrun
 #    && rm /sbin/pre-conf
 
 #Script to execute after install done and/or to create initial configuration
-#COPY after_install.sh /sbin/after_install
-#RUN chmod +x /sbin/after_install
+COPY after_install.sh /sbin/after_install
+RUN chmod +x /sbin/after_install
 
 # To allow access from outside of the container  to the container service at these ports
 # Need to allow ports access rule at firewall too .  
