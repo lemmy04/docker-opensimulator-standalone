@@ -43,8 +43,8 @@ RUN chmod +x /etc/my_init.d/startup.sh
 ##Adding Deamons to containers
 # To add opensim deamon to runit		
 RUN mkdir /etc/service/opensim		
-COPY opensim.sh /etc/service/opensim/unrun		
-RUN chmod +x /etc/service/opensim/unrun
+COPY opensim.sh /etc/service/opensim/run		
+RUN chmod +x /etc/service/opensim/run
 
 #Pre-config script that needs to be run when container image is created 
 #optionally include here additional software that needs to be installed or configured for some service running on the container.
