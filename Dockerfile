@@ -12,7 +12,7 @@ ENV TZ America/New_York
 #nant was remove and added mono build dependence
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF \ 
     && echo "deb http://download.mono-project.com/repo/ubuntu bionic main" | tee /etc/apt/sources.list.d/mono-official.list
-RUN echo $TZ > /etc/timezone && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q screen mono-complete ca-certificates-mono tzdata \
+RUN echo $TZ > /etc/timezone && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q screen mono-complete ca-certificates-mono tzdata unzip\
                     && rm /etc/localtime  \
                     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
                     && dpkg-reconfigure -f noninteractive tzdata \
