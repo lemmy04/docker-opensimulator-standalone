@@ -21,6 +21,9 @@ This container image is setup for connectiong to osgrid, and running up to 4 reg
 If you already have a Regions.ini file, map it into the container as /opt/opensim/bin/Regions/Regions.ini using -v
 If you don't, run the "first configuration" step described in the next section.
 
+If you want your region data to persist across container recreations or
+updates, mount a volume or a folder into /opt/opensim/bin/data
+
 To run container use the command below:
 
     $ docker run -ti -d \
@@ -29,7 +32,9 @@ To run container use the command below:
                  -p 9002:9002 -p 9002:9002/udp \
                  -p 9003:9003 -p 9003:9003/udp \
                  { -v your.region.ini:/opt/opensim/bin/Regions/Regions.ini} \
+		 { -v osgrid_data:/opt/opensim/bin/data } \
                  lemmy04/opensim:latest
+
  
 ## For the first configuration :
 
