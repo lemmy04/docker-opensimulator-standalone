@@ -26,7 +26,7 @@ ADD ["http://danbanner.onikenkon.com/osgrid/osgrid-opensim-09072019.v0.9.1.304d7
 
 RUN mkdir -p /opt/opensim
 RUN unzip -d /opt/opensim /tmp/opensim.zip
-RUN mkdir -p /opt/opensim/bin/data
+RUN mkdir -p /opt/opensim/bin/persistence
 
 ADD ["http://download.osgrid.org/OpenSim.ini.txt", "/opt/opensim/bin/OpenSim.ini"]
 ADD ["http://download.osgrid.org/GridCommon.ini.txt", "/opt/opensim/bin/config-include/GridCommon.ini"]
