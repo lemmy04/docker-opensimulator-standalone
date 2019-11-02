@@ -1,5 +1,5 @@
 #Name of container: docker-opensimulator
-#Version of container: 0.9.9
+#Version of container: 0.10.0
 
 FROM quantumobject/docker-baseimage:18.04
 MAINTAINER Mathias Homann <Mathias.Homann@openSUSE.org>
@@ -21,7 +21,7 @@ RUN echo $TZ > /etc/timezone && apt-get update && DEBIAN_FRONTEND=noninteractive
                     && rm -rf /var/lib/apt/lists/*
 
 
-ADD ["http://danbanner.onikenkon.com/osgrid/osgrid-opensim-09072019.v0.9.1.304d725.zip", "/tmp/opensim.zip"]
+ADD ["http://danbanner.onikenkon.com/osgrid/osgrid-opensim-11012019.v0.9.1.26b5aff.zip", "/tmp/opensim.zip"]
 
 
 RUN mkdir -p /opt/opensim
