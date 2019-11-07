@@ -1,4 +1,4 @@
-#Name of container: docker-opensimulator
+#Name of container: docker-opensimulator-standalone
 #Version of container: 0.10.0
 
 FROM quantumobject/docker-baseimage:18.04
@@ -28,9 +28,9 @@ RUN mkdir -p /opt/opensim
 RUN unzip -d /opt/opensim /tmp/opensim.zip
 RUN mkdir -p /opt/opensim/bin/persistence
 
-ADD ["http://download.osgrid.org/OpenSim.ini.txt", "/opt/opensim/bin/OpenSim.ini"]
-ADD ["http://download.osgrid.org/GridCommon.ini.txt", "/opt/opensim/bin/config-include/GridCommon.ini"]
-ADD ["http://download.osgrid.org/FlotsamCache.ini.txt", "/opt/opensim/bin/config-include/FlotsamCache.ini"]
+#ADD ["http://download.osgrid.org/OpenSim.ini.txt", "/opt/opensim/bin/OpenSim.ini"]
+#ADD ["http://download.osgrid.org/GridCommon.ini.txt", "/opt/opensim/bin/config-include/GridCommon.ini"]
+#ADD ["http://download.osgrid.org/FlotsamCache.ini.txt", "/opt/opensim/bin/config-include/FlotsamCache.ini"]
 ADD ["SQLiteStandalone.ini", "/opt/opensim/bin/config-include/storage/SQLiteStandalone.ini"]
 
 ##Startup scripts  
@@ -58,11 +58,10 @@ COPY after_install.sh /sbin/after_install
 RUN chmod +x /sbin/after_install
 
 # To allow access from outside of the container  to the container service at these ports
-# Need to allow ports access rule at firewall too .  
-EXPOSE 9000-9003/tcp
-EXPOSE 9000-9003/udp
+# Need to allow ports access rule at firewall too .
+# by default we're exposing 9 ports so we can run nine regions  
+EXPOSE 9000-9008/tcp
+EXPOSE 9000-9008/udp
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
-
-

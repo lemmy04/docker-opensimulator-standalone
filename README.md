@@ -1,4 +1,4 @@
-# docker-opensimulator
+# docker-opensimulator-standalone
 
 Docker container for [OpenSimulator 0.9.1][3]
 
@@ -27,13 +27,10 @@ updates, mount a volume or a folder into /opt/opensim/bin/persistence
 To run container use the command below:
 
     $ docker run -ti -d \
-                 -p 9000:9000 -p 9000:9000/udp \
-                 -p 9001:9001 -p 9001:9001/udp \
-                 -p 9002:9002 -p 9002:9002/udp \
-                 -p 9003:9003 -p 9003:9003/udp \
+                 -p 9000-9008:9000-9008 -p 9000-9008:9000-9008/udp \
                  { -v your.region.ini:/opt/opensim/bin/Regions/Regions.ini} \
-		 { -v osgrid_data:/opt/opensim/bin/persistence } \
-                 lemmy04/opensim:latest
+		 { -v opensim_data:/opt/opensim/bin/persistence } \
+                 lemmy04/opensim-standalone:latest
 
  
 ## For the first configuration :
