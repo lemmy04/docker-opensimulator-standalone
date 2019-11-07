@@ -24,7 +24,7 @@ If you don't, run the "first configuration" step described in the next section.
 If you want your region data to persist across container recreations or
 updates, mount a volume or a folder into /opt/opensim/bin/persistence
 
-To run container use the command below:
+To run container use the command below, adapt the port range to match the number of regions you want to run:
 
     $ docker run -ti -d \
                  -p 9000-9008:9000-9008 -p 9000-9008:9000-9008/udp \
