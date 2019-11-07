@@ -21,11 +21,11 @@ RUN echo $TZ > /etc/timezone && apt-get update && DEBIAN_FRONTEND=noninteractive
                     && rm -rf /var/lib/apt/lists/*
 
 
-ADD ["http://danbanner.onikenkon.com/osgrid/osgrid-opensim-11012019.v0.9.1.26b5aff.zip", "/tmp/opensim.zip"]
+#ADD ["http://danbanner.onikenkon.com/osgrid/osgrid-opensim-11012019.v0.9.1.26b5aff.zip", "/tmp/opensim.zip"]
 
 
 RUN mkdir -p /opt/opensim
-RUN unzip -d /opt/opensim /tmp/opensim.zip
+#RUN unzip -d /opt/opensim /tmp/opensim.zip
 RUN mkdir -p /opt/opensim/bin/persistence
 
 #ADD ["http://download.osgrid.org/OpenSim.ini.txt", "/opt/opensim/bin/OpenSim.ini"]
@@ -48,10 +48,10 @@ RUN chmod +x /etc/service/opensim/run
 
 #Pre-config script that needs to be run when container image is created 
 #optionally include here additional software that needs to be installed or configured for some service running on the container.
-#COPY pre-conf.sh /sbin/pre-conf
-#RUN chmod +x /sbin/pre-conf ; sync \
-#    && /bin/bash -c /sbin/pre-conf \
-#    && rm /sbin/pre-conf
+COPY pre-conf.sh /sbin/pre-conf
+RUN chmod +x /sbin/pre-conf ; sync \
+    && /bin/bash -c /sbin/pre-conf \
+    && rm /sbin/pre-conf
 
 #Script to execute after install done and/or to create initial configuration
 COPY after_install.sh /sbin/after_install
@@ -59,9 +59,9 @@ RUN chmod +x /sbin/after_install
 
 # To allow access from outside of the container  to the container service at these ports
 # Need to allow ports access rule at firewall too .
-# by default we're exposing 9 ports so we can run nine regions  
-EXPOSE 9000-9008/tcp
-EXPOSE 9000-9008/udp
+# by default we're exposing one port so we can run one regions  
+EXPOSE 9000/tcp
+EXPOSE 9000/udp
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
