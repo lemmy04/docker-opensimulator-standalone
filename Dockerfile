@@ -21,17 +21,6 @@ RUN echo $TZ > /etc/timezone && apt-get update && DEBIAN_FRONTEND=noninteractive
                     && rm -rf /var/lib/apt/lists/*
 
 
-#ADD ["http://danbanner.onikenkon.com/osgrid/osgrid-opensim-11012019.v0.9.1.26b5aff.zip", "/tmp/opensim.zip"]
-
-
-RUN mkdir -p /opt/opensim
-#RUN unzip -d /opt/opensim /tmp/opensim.zip
-RUN mkdir -p /opt/opensim/bin/persistence
-
-#ADD ["http://download.osgrid.org/OpenSim.ini.txt", "/opt/opensim/bin/OpenSim.ini"]
-#ADD ["http://download.osgrid.org/GridCommon.ini.txt", "/opt/opensim/bin/config-include/GridCommon.ini"]
-#ADD ["http://download.osgrid.org/FlotsamCache.ini.txt", "/opt/opensim/bin/config-include/FlotsamCache.ini"]
-ADD ["SQLiteStandalone.ini", "/opt/opensim/bin/config-include/storage/SQLiteStandalone.ini"]
 
 ##Startup scripts  
 #Pre-config scrip that needs to be run only when the container runs the first time 
@@ -52,6 +41,10 @@ COPY pre-conf.sh /sbin/pre-conf
 RUN chmod +x /sbin/pre-conf ; sync \
     && /bin/bash -c /sbin/pre-conf \
     && rm /sbin/pre-conf
+
+# create persistence
+RUN mkdir -p /opt/opensim/bin/persistence
+ADD ["SQLiteStandalone.ini", "/opt/opensim/bin/config-include/storage/SQLiteStandalone.ini"]
 
 #Script to execute after install done and/or to create initial configuration
 COPY after_install.sh /sbin/after_install
