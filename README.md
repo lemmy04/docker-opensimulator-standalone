@@ -17,7 +17,7 @@ To install docker in Ubuntu 18.04 use the commands:
 
 ## Usage
 
-This container image is setup for connectiong to osgrid, and running up to 4 regions on the ports 9000-9003.
+This container image is set up for running up one standalone region on port 9000.
 If you already have a Regions.ini file, map it into the container as /opt/opensim/bin/Regions/Regions.ini using -v
 If you don't, run the "first configuration" step described in the next section.
 
@@ -82,9 +82,9 @@ Where:
 
  - grid name ==> it will be region name
 
- - login URL ==>  http://external_ip:9000/  
+ - login URL ==>  http://127.0.0.1:9000/  
 
- - login page ==> http://external_ip:9000/?method=login
+ - login page ==> http://127.0.0.1:9000/?method=login
 
 Everything else no important at this moment. Press apply and then use info to log in.
 
