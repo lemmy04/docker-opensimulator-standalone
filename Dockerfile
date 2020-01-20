@@ -35,12 +35,12 @@ RUN mkdir /etc/service/opensim
 COPY opensim.sh /etc/service/opensim/unrun		
 RUN chmod +x /etc/service/opensim/unrun
 
-#Pre-config script that needs to be run when container image is created 
-#optionally include here additional software that needs to be installed or configured for some service running on the container.
-COPY pre-conf.sh /sbin/pre-conf
-RUN chmod +x /sbin/pre-conf ; sync \
-    && /bin/bash -c /sbin/pre-conf \
-    && rm /sbin/pre-conf
+##Adding opensim zip file
+# Unpacking to /opt
+ADD ["http://opensimulator.org/dist/opensim-0.9.1.1.zip","/tmp/opensim.zip"]
+RUN mkdir -p /opt/
+RUN unzip /tmp/opensim.zip -d /opt/
+RUN mv /opt/opensim-0.9.1.1 /opt/opensim
 
 # create persistence
 RUN mkdir -p /opt/opensim/bin/persistence
