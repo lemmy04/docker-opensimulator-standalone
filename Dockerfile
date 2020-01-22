@@ -51,8 +51,8 @@ RUN cp /home/opensim/opensim/bin/config-include/StandaloneCommon.ini.example /ho
 RUN sed  -i 's/; Include-Architecture = "config-include\/Standalone.ini"/Include-Architecture = "config-include\/Standalone.ini"/' /home/opensim/opensim/bin/OpenSim.ini
 
 #Startup script
-COPY opensim.sh /home/opensim/opensim
-RUN chmod +x  /home/opensim/opensim/opensim.sh
+COPY opensim.sh /home/opensim/opensim/bin
+RUN chmod +x  /home/opensim/opensim/bin/opensim.sh
 
 # To allow access from outside of the container  to the container service at these ports
 # Need to allow ports access rule at firewall too .
@@ -62,4 +62,4 @@ EXPOSE 9000/udp
 
 WORKDIR /home/opensim/opensim/bin
 USER opensim
-CMD ["/home/opensim/opensim/opensim.sh"]
+CMD ["/home/opensim/opensim/bin/opensim.sh"]
