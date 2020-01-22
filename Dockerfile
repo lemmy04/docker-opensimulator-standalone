@@ -1,54 +1,58 @@
-#Name of container: docker-opensimulator-standalone
-#Version of container: 0.10.0
+FROM opensuse/leap:latest
 
-FROM quantumobject/docker-baseimage:18.04
-MAINTAINER Mathias Homann <Mathias.Homann@openSUSE.org>
+MAINTAINER lemmy04 <Mathias.Homann@openSUSE.org>
+LABEL version=0.9.1.1.20200122 Description="For running a standalone opensim instance in a docker container." Vendor="Mathias.Homann@openSUSE.org"
 
-#to fix problem with /etc/localtime
-ENV TZ America/New_York
+## install all updates
+## Date: 2020-01-22
 
-#Add repository and update the container
-#Installation of necessary package/software for this containers...
-#nant was remove and added mono build dependence
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF \ 
-    && echo "deb http://download.mono-project.com/repo/ubuntu bionic main" | tee /etc/apt/sources.list.d/mono-official.list
-RUN echo $TZ > /etc/timezone && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q screen mono-complete ca-certificates-mono tzdata unzip\
-                    && rm /etc/localtime  \
-                    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
-                    && dpkg-reconfigure -f noninteractive tzdata \
-                    && apt-get clean \
-                    && rm -rf /tmp/* /var/tmp/*  \ 
-                    && rm -rf /var/lib/apt/lists/*
+RUN zypper ref
+RUN zypper patch -y -l --with-optional ; exit 0
 
+## do it again, could be an update for zypper in there
+RUN zypper patch -y -l --with-optional ; exit 0
 
+## install everything needed to run the bot
+RUN zypper install -y -l --recommends mono-core mono-extras unzip curl screen sed less
 
-##Startup scripts  
-#Pre-config scrip that needs to be run only when the container runs the first time 
-#Setting a flag for not running it again. This is used for setting up the service.
-RUN mkdir -p /etc/my_init.d
-COPY startup.sh /etc/my_init.d/startup.sh
-RUN chmod +x /etc/my_init.d/startup.sh
+## clean zypper cache for smaller image
+RUN zypper cc --all
 
-##Adding Deamons to containers
-# To add opensim deamon to runit		
-RUN mkdir /etc/service/opensim		
-COPY opensim.sh /etc/service/opensim/unrun		
-RUN chmod +x /etc/service/opensim/unrun
+## setup /run/uscreens
+RUN mkdir -p /run/uscreens
+RUN chmod a+rwx,o+t /run/uscreens
+
+## create an opensim user and group
+RUN useradd \
+        -c "The user that runs the opensim regions" \
+        --no-log-init \
+        -m \
+        -U \
+        opensim
+
 
 ##Adding opensim zip file
-# Unpacking to /opt
+# Unpacking to /home/opensim/opensim
 ADD ["http://opensimulator.org/dist/opensim-0.9.1.1.zip","/tmp/opensim.zip"]
-RUN mkdir -p /opt/
-RUN unzip /tmp/opensim.zip -d /opt/
-RUN mv /opt/opensim-0.9.1.1 /opt/opensim
+RUN unzip /tmp/opensim.zip -d /home/opensim
+RUN mv /home/opensim/opensim-0.9.1.1 /home/opensim/opensim
 
 # create persistence
-RUN mkdir -p /opt/opensim/bin/persistence
-ADD ["SQLiteStandalone.ini", "/opt/opensim/bin/config-include/storage/SQLiteStandalone.ini"]
+RUN mkdir -p /home/opensim/opensim/bin/persistence
+ADD ["SQLiteStandalone.ini", "/home/opensim/opensim/bin/config-include/storage/SQLiteStandalone.ini"]
+
+# change ownership of everything
+RUN chown -R opensim:opensim /home/opensim/opensim
 
 #Script to execute after install done and/or to create initial configuration
-COPY after_install.sh /sbin/after_install
-RUN chmod +x /sbin/after_install
+RUN cp /home/opensim/opensim/bin/pCampBot.ini.example /home/opensim/opensim/bin/pCampBot.ini
+RUN cp /home/opensim/opensim/bin/OpenSim.ini.example /home/opensim/opensim/bin/OpenSim.ini
+RUN cp /home/opensim/opensim/bin/config-include/StandaloneCommon.ini.example /home/opensim/opensim/bin/config-include/StandaloneCommon.ini
+RUN sed  -i 's/; Include-Architecture = "config-include\/Standalone.ini"/Include-Architecture = "config-include\/Standalone.ini"/' /home/opensim/opensim/bin/OpenSim.ini
+
+#Startup script
+COPY opensim.sh /home/opensim/opensim
+RUN chmod +x  /home/opensim/opensim/opensim.sh
 
 # To allow access from outside of the container  to the container service at these ports
 # Need to allow ports access rule at firewall too .
@@ -56,5 +60,6 @@ RUN chmod +x /sbin/after_install
 EXPOSE 9000/tcp
 EXPOSE 9000/udp
 
-# Use baseimage-docker's init system.
-CMD ["/sbin/my_init"]
+WORKDIR /home/opensim/opensim/bin
+USER opensim
+CMD ["/home/opensim/opensim/opensim.sh"]

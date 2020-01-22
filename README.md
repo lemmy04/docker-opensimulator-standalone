@@ -22,22 +22,28 @@ If you already have a Regions.ini file, map it into the container as /opt/opensi
 If you don't, run the "first configuration" step described in the next section.
 
 If you want your region data to persist across container recreations or
-updates, mount a volume or a folder into /opt/opensim/bin/persistence
+updates, mount a volume or a folder into /home/opensim/opensim/bin/persistence
 
 To run container use the command below, adapt the port range to match the number of regions you want to run:
 
     $ docker run -ti -d \
                  -p 9000-9008:9000-9008 -p 9000-9008:9000-9008/udp \
-                 { -v your.region.ini:/opt/opensim/bin/Regions/Regions.ini} \
-		 { -v opensim_data:/opt/opensim/bin/persistence } \
+                 { -v your.region.ini:/home/opensim/opensim/bin/Regions/Regions.ini} \
+		 { -v opensim_data:/home/opensim/opensim/bin/persistence } \
                  lemmy04/opensim-standalone:latest
 
  
 ## For the first configuration :
+Enter the running container:
 
-     $ docker exec -it container_id after_install
+     $ docker exec -it container_id /bin/bash -login
 
-Them respond the questions relate to virtual word : 
+Then, attach to the running opensim process with this:
+
+     $ screen -r
+
+
+Then respond to the questions related to your virtual word:
 
  - New region name []:     ==> need to entry region name that you want for it .(need to remember it).
 
@@ -72,6 +78,9 @@ Region (.....) #
  - 'quit' command to continue.
 
 
+You will now have to restart the container, and possibly change the restart
+policy.
+
 ## Use viewer to check the virtual world create by OpenSimulator:
 
 Imprudence viewer [http://wiki.kokuaviewer.org/wiki/Imprudence:Downloads][6]
@@ -92,14 +101,12 @@ Everything else no important at this moment. Press apply and then use info to lo
 
 About OpenSimulator [www.opensimulator.org][1]
 
-To help improve this container [quantumobject/docker-opensimulator][5]
+To help improve this container [lemmy04/docker-opensimulator-standalone][5]
 
-For additional info about us and our projects check our site [www.quantumobject.org][7]
 
 [1]:http://www.opensimulator.org/
 [2]:https://www.docker.com
 [3]:http://opensimulator.org/wiki/Download
 [4]:http://docs.docker.com
-[5]:https://github.com/QuantumObject/docker-opensimulator
+[5]:https://github.com/lemmy04/docker-opensimulator-standalone
 [6]:http://wiki.kokuaviewer.org/wiki/Imprudence:Downloads
-[7]:https://www.quantumobject.org/
