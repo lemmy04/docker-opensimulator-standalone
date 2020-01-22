@@ -1,5 +1,7 @@
-FROM opensuse/leap:latest
+#Name of container: docker-opensimulator-osgrid
+#Version of container: 0.9.1.1.20200122
 
+FROM opensuse/leap:latest
 MAINTAINER lemmy04 <Mathias.Homann@openSUSE.org>
 LABEL version=0.9.1.1.20200122 Description="For running a standalone opensim instance in a docker container." Vendor="Mathias.Homann@openSUSE.org"
 
@@ -13,7 +15,7 @@ RUN zypper patch -y -l --with-optional ; exit 0
 RUN zypper patch -y -l --with-optional ; exit 0
 
 ## install everything needed to run the bot
-RUN zypper install -y -l --recommends mono-core mono-extras unzip curl screen sed less
+RUN zypper install -y -l --recommends mono-core mono-extras unzip curl screen sed less htop
 
 ## clean zypper cache for smaller image
 RUN zypper cc --all
@@ -30,7 +32,6 @@ RUN useradd \
         -U \
         opensim
 
-
 ##Adding opensim zip file
 # Unpacking to /home/opensim/opensim
 ADD ["http://opensimulator.org/dist/opensim-0.9.1.1.zip","/tmp/opensim.zip"]
@@ -44,13 +45,13 @@ ADD ["SQLiteStandalone.ini", "/home/opensim/opensim/bin/config-include/storage/S
 # change ownership of everything
 RUN chown -R opensim:opensim /home/opensim/opensim
 
-#Script to execute after install done and/or to create initial configuration
+# aivate default config
 RUN cp /home/opensim/opensim/bin/pCampBot.ini.example /home/opensim/opensim/bin/pCampBot.ini
 RUN cp /home/opensim/opensim/bin/OpenSim.ini.example /home/opensim/opensim/bin/OpenSim.ini
 RUN cp /home/opensim/opensim/bin/config-include/StandaloneCommon.ini.example /home/opensim/opensim/bin/config-include/StandaloneCommon.ini
 RUN sed  -i 's/; Include-Architecture = "config-include\/Standalone.ini"/Include-Architecture = "config-include\/Standalone.ini"/' /home/opensim/opensim/bin/OpenSim.ini
 
-#Startup script
+# Startup script
 COPY opensim.sh /home/opensim/opensim/bin
 RUN chmod +x  /home/opensim/opensim/bin/opensim.sh
 
