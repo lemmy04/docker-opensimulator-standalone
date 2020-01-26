@@ -6,7 +6,7 @@ MAINTAINER lemmy04 <Mathias.Homann@openSUSE.org>
 LABEL version=0.9.1.1.20200122 Description="For running a standalone opensim instance in a docker container." Vendor="Mathias.Homann@openSUSE.org"
 
 ## install all updates
-## Date: 2020-01-22
+## Date: 2020-01-26
 
 RUN zypper ref
 RUN zypper patch -y -l --with-optional ; exit 0
