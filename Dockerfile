@@ -6,8 +6,7 @@ MAINTAINER lemmy04 <Mathias.Homann@openSUSE.org>
 LABEL version=0.9.1.1.20200R203 Description="For running a standalone opensim instance in a docker container." Vendor="Mathias.Homann@openSUSE.org"
 
 ## install all updates
-## Date: 2020-02-04
-RUN zypper --gpg-auto-import-keys addrepo -r https://download.opensuse.org/repositories/home:/lemmy04:/branches:/Mono:/Factory/openSUSE_Factory/home:lemmy04:branches:Mono:Factory.repo -e -f -p 40
+## Date: 2020-02-07
 RUN zypper --gpg-auto-import-keys addrepo -r https://download.opensuse.org/repositories/Mono:/Factory/openSUSE_Factory/Mono:Factory.repo -e -f -p 50
 RUN zypper --gpg-auto-import-keys ref
 RUN zypper patch -y -l --with-optional ; exit 0
