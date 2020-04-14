@@ -36,7 +36,8 @@ RUN useradd \
 ##Adding opensim zip file
 # Unpacking to /home/opensim/opensim
 ADD ["http://opensimulator.org/dist/opensim-0.9.1.1.zip","/tmp/opensim.zip"]
-RUN unzip /tmp/opensim.zip -d /home/opensim
+RUN unzip -d /home/opensim /tmp/opensim.zip
+RUN rm /tmp/opensim.zip
 RUN mv /home/opensim/opensim-0.9.1.1 /home/opensim/opensim
 
 # create persistence
