@@ -1,19 +1,13 @@
 #Name of container: docker-opensimulator-osgrid
 #Version of container: 0.9.1.1.20200127
 
-FROM opensuse/tumbleweed:latest
+FROM opensuse/leap:15.2
 MAINTAINER lemmy04 <Mathias.Homann@openSUSE.org>
 LABEL version=0.9.1.1.20200R203 Description="For running a standalone opensim instance in a docker container." Vendor="Mathias.Homann@openSUSE.org"
 
 ## install all updates
 ## Date: 2020-06-23
-## RUN zypper --gpg-auto-import-keys addrepo -r https://download.opensuse.org/repositories/home:/lemmy04:/branches:/Mono:/Factory/openSUSE_Factory/home:lemmy04:branches:Mono:Factory.repo -e -f -p 40
-RUN zypper --gpg-auto-import-keys addrepo -r https://download.opensuse.org/repositories/Mono:/Factory/openSUSE_Factory/Mono:Factory.repo -e -f -p 50
 RUN zypper --gpg-auto-import-keys ref
-RUN zypper patch -y -l --with-optional ; exit 0
-
-## do it again, could be an update for zypper in there
-RUN zypper patch -y -l --with-optional ; exit 0
 
 ## install everything needed to run the bot
 RUN zypper install -y -l --recommends mono-core mono-extras unzip curl screen sed less htop
