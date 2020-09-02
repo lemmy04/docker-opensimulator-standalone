@@ -1,19 +1,9 @@
 #Name of container: docker-opensimulator-osgrid
 #Version of container: 0.9.1.1.20200127
 
-FROM opensuse/leap:15.2
+FROM lemmy04/mono-base:latest
 MAINTAINER lemmy04 <Mathias.Homann@openSUSE.org>
 LABEL version=0.9.1.1.20200R203 Description="For running a standalone opensim instance in a docker container." Vendor="Mathias.Homann@openSUSE.org"
-
-## install all updates
-## Date: 2020-06-23
-RUN zypper --gpg-auto-import-keys ref
-
-## install everything needed to run the bot
-RUN zypper install -y -l --recommends mono-core mono-extras unzip curl screen sed less htop
-
-## clean zypper cache for smaller image
-RUN zypper cc --all
 
 ## setup /run/uscreens
 RUN mkdir -p /run/uscreens
