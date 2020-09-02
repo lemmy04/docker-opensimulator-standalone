@@ -1,7 +1,8 @@
 #Name of container: docker-opensimulator-osgrid
 #Version of container: 0.9.1.1.20200127
 
-FROM lemmy04/mono-base:latest
+FROM lemmy04/mono-base:0.1
+
 MAINTAINER lemmy04 <Mathias.Homann@openSUSE.org>
 LABEL version=0.9.1.1.20200R203 Description="For running a standalone opensim instance in a docker container." Vendor="Mathias.Homann@openSUSE.org"
 
