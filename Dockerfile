@@ -1,10 +1,10 @@
 #Name of container: docker-opensimulator-osgrid
-#Version of container: 0.9.1.1.20200127
+#Version of container: 0.9.2.0
 
 FROM lemmy04/mono-base:0.1
 
 MAINTAINER lemmy04 <Mathias.Homann@openSUSE.org>
-LABEL version=0.9.1.1.20200R203 Description="For running a standalone opensim instance in a docker container." Vendor="Mathias.Homann@openSUSE.org"
+LABEL version=0.9.2.0 Description="For running a standalone opensim instance in a docker container." Vendor="Mathias.Homann@openSUSE.org"
 
 ## setup /run/uscreens
 RUN mkdir -p /run/uscreens
@@ -20,10 +20,10 @@ RUN useradd \
 
 ##Adding opensim zip file
 # Unpacking to /home/opensim/opensim
-ADD ["http://opensimulator.org/dist/opensim-0.9.1.1.zip","/tmp/opensim.zip"]
+ADD ["http://opensimulator.org/dist/opensim-0.9.2.0.zip","/tmp/opensim.zip"]
 RUN unzip -d /home/opensim /tmp/opensim.zip
 RUN rm /tmp/opensim.zip
-RUN mv /home/opensim/opensim-0.9.1.1 /home/opensim/opensim
+RUN mv /home/opensim/opensim-0.9.2.0 /home/opensim/opensim
 
 # create persistence
 RUN mkdir -p /home/opensim/opensim/bin/persistence
@@ -32,7 +32,7 @@ ADD ["SQLiteStandalone.ini", "/home/opensim/opensim/bin/config-include/storage/S
 # change ownership of everything
 RUN chown -R opensim:opensim /home/opensim/opensim
 
-# aivate default config
+# activate default config
 RUN cp /home/opensim/opensim/bin/pCampBot.ini.example /home/opensim/opensim/bin/pCampBot.ini
 RUN cp /home/opensim/opensim/bin/OpenSim.ini.example /home/opensim/opensim/bin/OpenSim.ini
 RUN cp /home/opensim/opensim/bin/config-include/StandaloneCommon.ini.example /home/opensim/opensim/bin/config-include/StandaloneCommon.ini
